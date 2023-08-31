@@ -19,6 +19,10 @@ class Server {
 
   start() {
     this.applyMiddlewares();
+    this.app.get('/', (req, res) => {
+      res.send('Api documentation: https://www.postman.com/ersajo/workspace/netflix-api/overview');
+    });
+
     this.app.listen(this.port, async () => {
       logger.log(`🚀 [server] Server is running at http://localhost:${this.port}`);
       await db.init();
