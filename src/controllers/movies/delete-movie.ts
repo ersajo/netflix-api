@@ -20,6 +20,13 @@ export const buildDeleteMovie = ({
       }
       const deletedMovie = await deleteMovie(params.id);
 
+      deletedMovie.platforms = await Promise.all(
+        deletedMovie.platforms.map(async (platform: any) => {
+          const platformFound = await getPlatform({ _id: platform.platform_id});
+          return platformFound;
+        })
+      );
+
       return {
         success: true,
         statusCode: StatusCodes.OK,
