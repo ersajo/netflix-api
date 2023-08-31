@@ -2,7 +2,7 @@ import { UUID } from "mongodb";
 import { IPlatform, IReview } from "./";
 
 export interface IMovie {
-  _id: UUID;
+  _id?: UUID;
   title: string;
   slug: string;
   image: string;

@@ -16,6 +16,7 @@ import { buildGetMovie } from "./get-movie";
 import { buildInsertMovie } from "./insert-movie";
 import { buildUpdateMovie } from "./update-movie";
 import { buildDeleteMovie } from "./delete-movie";
+import { buildScriptMovie } from "./script-movie";
 
 export const getMoviesController = buildGetMovies({
   getMovies,
@@ -38,5 +39,10 @@ export const updateMovieController = buildUpdateMovie({
 });
 export const deleteMovieController = buildDeleteMovie({
   deleteMovie,
+  getPlatform,
+});
+export const scriptMovieController = buildScriptMovie({
+  createMovie,
+  getMovie,
   getPlatform,
 });

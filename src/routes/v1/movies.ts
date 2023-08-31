@@ -4,7 +4,8 @@ import {
   deleteMovieController,
   getMovieController,
   getMoviesController,
-  updateMovieController
+  updateMovieController,
+  scriptMovieController,
 } from "../../controllers/movies/";
 import { adaptRoute } from "../../helpers/callback";
 
@@ -15,5 +16,6 @@ router.get("/:id", adaptRoute(getMovieController));
 router.post("/", adaptRoute(createMovieController));
 router.put("/:id", adaptRoute(updateMovieController));
 router.delete("/:id", adaptRoute(deleteMovieController));
+router.post("/:id/scripts", adaptRoute(scriptMovieController));
 
 export default router;
