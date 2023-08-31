@@ -1,2 +1,2 @@
 # netflix-api
-Serverless netflix api
+netflix api
