@@ -17,6 +17,7 @@ export const buildGetMovies = ({
 
       for (let i = 0; i < movies.length; i++) {
         const movie = movies[i];
+        if (!movie.platforms) movie.platforms = [];
         movie.platforms = await Promise.all(
           movie.platforms.map(async (platform: any) => {
             const platformFound = await getPlatform({ _id: platform.platform_id});

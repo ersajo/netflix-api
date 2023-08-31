@@ -29,6 +29,7 @@ export const buildScriptMovie = ({
       movie.title = `${movie.title} (copy)`;
       const insertedMovie = await createMovie(movie);
 
+      if (!insertedMovie.platforms) insertedMovie.platforms = [];
       insertedMovie.platforms = await Promise.all(
         insertedMovie.platforms.map(async (platform: any) => {
           const platformFound = await getPlatform({ _id: platform.platform_id});

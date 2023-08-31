@@ -15,11 +15,11 @@ export const buildDeleteMovie = ({
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
       const { params } = request;
-      if (!params?.id) {
-        throw new Error("You must supply an id.");
-      }
+      if (!params?.id) throw new Error("You must supply an id.");
+
       const deletedMovie = await deleteMovie(params.id);
 
+      if (!deletedMovie.platforms) deletedMovie.platforms = [];
       deletedMovie.platforms = await Promise.all(
         deletedMovie.platforms.map(async (platform: any) => {
           const platformFound = await getPlatform({ _id: platform.platform_id});

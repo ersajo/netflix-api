@@ -23,9 +23,8 @@ export const buildInsertMovie = ({
     try {
       const { body: movie } = request;
       const movieFound = await getMovie({title: movie.title});
-      if (movieFound) {
-        throw new Error('Movie already exists');
-      }
+      if (movieFound) throw new Error('Movie already exists');
+
       movie.platforms = await Promise.all(
         movie.platforms.map(async (platform: IPlatform) => {
           const platformFound = await getPlatform({ title: platform.title});
@@ -39,6 +38,7 @@ export const buildInsertMovie = ({
 
       const insertedMovie = await createMovie(movie);
 
+      if (!insertedMovie.platforms) insertedMovie.platforms = [];
       insertedMovie.platforms = await Promise.all(
         insertedMovie.platforms.map(async (platform: any) => {
           const platformFound = await getPlatform({ _id: platform.platform_id});

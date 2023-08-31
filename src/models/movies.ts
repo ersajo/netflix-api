@@ -7,9 +7,9 @@ export interface IMovie {
   slug: string;
   image: string;
   director: string;
-  platforms: IPlatform[];
+  platforms?: IPlatform[];
   score: number;
   createdAt: string;
   updatedAt: string;
-  reviews: IReview[];
+  reviews?: IReview[];
 }

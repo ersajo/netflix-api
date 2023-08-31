@@ -16,11 +16,11 @@ export const buildGetMovie = ({
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
       const { params } = request;
-      if (!params?.id) {
-        throw new Error("You must supply an id.");
-      }
+      if (!params?.id) throw new Error("You must supply an id.");
+
       const movie = await getMovie({_id: new ObjectId(params.id)});
 
+      if (!movie.platforms) movie.platforms = [];
       movie.platforms = await Promise.all(
         movie.platforms.map(async (platform: any) => {
           const platformFound = await getPlatform({ _id: platform.platform_id});

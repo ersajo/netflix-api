@@ -20,7 +20,7 @@ export const adaptRoute = (controller: Controller) => {
 			};
 			const httpResponse: IControllerResponse = await controller(httpRequest);
 
-			res.json(httpResponse.body);
+			res.status(httpResponse.statusCode).json(httpResponse.body);
 		} catch (error: any) {
 			logger.log(error);
 

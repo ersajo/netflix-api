@@ -23,17 +23,14 @@ export const buildUpdateMovie = ({
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
       const { params, body } = request;
-      if (!params?.id) {
-        throw new Error("You must supply an id.");
-      }
+      if (!params?.id) throw new Error("You must supply an id.");
+
       const movie = await getMovie({ _id: new ObjectId(params.id) });
-      if (!movie) {
-        throw new Error("Movie not found.");
-      }
+      if (!movie) throw new Error("Movie not found.");
 
       if (body.platforms) {
         body.platforms = await Promise.all(
-          movie.platforms.map(async (platform: IPlatform) => {
+          (movie.platforms || []).map(async (platform: IPlatform) => {
             const platformFound = await getPlatform({ title: platform.title});
             if (platformFound) {
               return { platform_id: platformFound._id };
@@ -45,8 +42,9 @@ export const buildUpdateMovie = ({
       }
       const updatedMovie = await updateMovie(params.id, body);
 
+      if (!updatedMovie.platforms) updatedMovie.platforms = [];
       updatedMovie.platforms = await Promise.all(
-        updatedMovie.platforms.map(async (platform: any) => {
+        (updatedMovie.platforms).map(async (platform: any) => {
           const platformFound = await getPlatform({ _id: platform.platform_id});
           return platformFound;
         })

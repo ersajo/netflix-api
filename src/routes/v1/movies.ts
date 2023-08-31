@@ -8,6 +8,7 @@ import {
   scriptMovieController,
 } from "../../controllers/movies/";
 import { adaptRoute } from "../../helpers/callback";
+import reviewsApi from "./reviews";
 
 const router = Router();
 
@@ -17,5 +18,7 @@ router.post("/", adaptRoute(createMovieController));
 router.put("/:id", adaptRoute(updateMovieController));
 router.delete("/:id", adaptRoute(deleteMovieController));
 router.post("/:id/scripts", adaptRoute(scriptMovieController));
+
+router.use("/reviews", reviewsApi);
 
 export default router;
