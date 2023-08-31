@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { createMovieController, deleteMovieController, getMovieController, getMoviesController, updateMovieController } from "../../controllers/movies/";
+import {
+  createMovieController,
+  deleteMovieController,
+  getMovieController,
+  getMoviesController,
+  updateMovieController
+} from "../../controllers/movies/";
 import { adaptRoute } from "../../helpers/callback";
 
 const router = Router();

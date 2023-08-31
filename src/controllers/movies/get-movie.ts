@@ -1,9 +1,9 @@
+import { ObjectId } from "mongodb";
 import { StatusCodes } from "http-status-codes";
 import { IGetMovie } from "../../services/movies/get-movie";
 
 import { IControllerResponse } from "..";
 import { IHttpRequest } from "../../helpers/callback";
-import { ObjectId } from "mongodb";
 
 export const buildGetMovie = ({ getMovie }: { getMovie: IGetMovie }) => {
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {

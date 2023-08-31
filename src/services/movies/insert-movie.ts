@@ -11,9 +11,7 @@ export const buildCreateMovies = ({
   moviesDb: IMoviesDb
 }): ICreateMovies => {
   return async (movie: IMovie): Promise<IMovie> => {
-    movie.createdAt = new Date().toLocaleString('es-ES', {
-      timeZone: 'America/Mexico_City',
-    });
+    movie.createdAt = new Date().toISOString();
     movie.updatedAt = movie.createdAt;
     movie.slug = movie.title.toLowerCase().replace(/ /g, '-');
     movie.slug = movie.slug.replace(/[^\w-]+/g, '');
