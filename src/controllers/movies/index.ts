@@ -11,6 +11,11 @@ import {
   createPlatform
 } from "../../services/platforms";
 
+import {
+  getReviews,
+  getScore,
+} from "../../services/reviews";
+
 import { buildGetMovies } from "./get-movies";
 import { buildGetMovie } from "./get-movie";
 import { buildInsertMovie } from "./insert-movie";
@@ -21,10 +26,14 @@ import { buildScriptMovie } from "./script-movie";
 export const getMoviesController = buildGetMovies({
   getMovies,
   getPlatform,
+  getReviews,
+  getScore,
 });
 export const getMovieController = buildGetMovie({
   getMovie,
   getPlatform,
+  getReviews,
+  getScore,
 });
 export const createMovieController = buildInsertMovie({
   createMovie,

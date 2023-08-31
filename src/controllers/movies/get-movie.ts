@@ -5,13 +5,19 @@ import { IGetMovie } from "../../services/movies/get-movie";
 import { IControllerResponse } from "..";
 import { IHttpRequest } from "../../helpers/callback";
 import { IGetPlatform } from "../../services/platforms/get-platform";
+import { IGetReviews } from "../../services/reviews/get-reviews";
+import { IGetScore } from "../../services/reviews/get-score";
 
 export const buildGetMovie = ({
   getMovie,
   getPlatform,
+  getReviews,
+  getScore,
 }: {
   getMovie: IGetMovie,
   getPlatform: IGetPlatform,
+  getReviews: IGetReviews,
+  getScore: IGetScore,
 }) => {
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
@@ -27,6 +33,15 @@ export const buildGetMovie = ({
           return platformFound;
         })
       );
+
+      movie.reviews = await getReviews({ movie: movie._id?.toString() });
+      movie.reviews = await Promise.all(movie.reviews.map(async (review: any) => {
+        const platformFound = await getPlatform({ _id: new ObjectId(review._id) });
+        review.platform = platformFound.title;
+        return review;
+      }));
+
+      movie.score = await getScore({ movie: movie._id?.toString() });
 
       return {
         success: true,
