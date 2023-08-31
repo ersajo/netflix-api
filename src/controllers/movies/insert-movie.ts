@@ -39,6 +39,13 @@ export const buildInsertMovie = ({
 
       const insertedMovie = await createMovie(movie);
 
+      insertedMovie.platforms = await Promise.all(
+        insertedMovie.platforms.map(async (platform: any) => {
+          const platformFound = await getPlatform({ _id: platform.platform_id});
+          return platformFound;
+        })
+      );
+
       return {
         success: true,
         statusCode: StatusCodes.OK,

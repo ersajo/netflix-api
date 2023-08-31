@@ -17,13 +17,26 @@ import { buildInsertMovie } from "./insert-movie";
 import { buildUpdateMovie } from "./update-movie";
 import { buildDeleteMovie } from "./delete-movie";
 
-export const getMoviesController = buildGetMovies({ getMovies });
-export const getMovieController = buildGetMovie({ getMovie });
+export const getMoviesController = buildGetMovies({
+  getMovies,
+  getPlatform,
+});
+export const getMovieController = buildGetMovie({
+  getMovie,
+  getPlatform,
+});
 export const createMovieController = buildInsertMovie({
   createMovie,
   getMovie,
   getPlatform,
   createPlatform
 });
-export const updateMovieController = buildUpdateMovie({ updateMovie });
-export const deleteMovieController = buildDeleteMovie({ deleteMovie });
+export const updateMovieController = buildUpdateMovie({
+  updateMovie,
+  getPlatform,
+  getMovie,
+});
+export const deleteMovieController = buildDeleteMovie({
+  deleteMovie,
+  getPlatform,
+});

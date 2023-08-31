@@ -3,8 +3,15 @@ import { IDeleteMovie } from "../../services/movies/delete-movie";
 
 import { IControllerResponse } from "..";
 import { IHttpRequest } from "../../helpers/callback";
+import { IGetPlatform } from "../../services/platforms/get-platform";
 
-export const buildDeleteMovie = ({ deleteMovie }: { deleteMovie: IDeleteMovie }) => {
+export const buildDeleteMovie = ({
+  deleteMovie,
+  getPlatform,
+}: {
+  deleteMovie: IDeleteMovie,
+  getPlatform: IGetPlatform,
+}) => {
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
       const { params } = request;

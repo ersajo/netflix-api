@@ -4,8 +4,15 @@ import { IGetMovie } from "../../services/movies/get-movie";
 
 import { IControllerResponse } from "..";
 import { IHttpRequest } from "../../helpers/callback";
+import { IGetPlatform } from "../../services/platforms/get-platform";
 
-export const buildGetMovie = ({ getMovie }: { getMovie: IGetMovie }) => {
+export const buildGetMovie = ({
+  getMovie,
+  getPlatform,
+}: {
+  getMovie: IGetMovie,
+  getPlatform: IGetPlatform,
+}) => {
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
       const { params } = request;
@@ -13,6 +20,13 @@ export const buildGetMovie = ({ getMovie }: { getMovie: IGetMovie }) => {
         throw new Error("You must supply an id.");
       }
       const movie = await getMovie({_id: new ObjectId(params.id)});
+
+      movie.platforms = await Promise.all(
+        movie.platforms.map(async (platform: any) => {
+          const platformFound = await getPlatform({ _id: platform.platform_id});
+          return platformFound;
+        })
+      );
 
       return {
         success: true,
