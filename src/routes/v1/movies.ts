@@ -6,6 +6,7 @@ import {
   getMoviesController,
   updateMovieController,
   scriptMovieController,
+  seedMoviesController,
 } from "../../controllers/movies/";
 import { adaptRoute } from "../../helpers/callback";
 import reviewsApi from "./reviews";
@@ -17,6 +18,7 @@ router.get("/:id", adaptRoute(getMovieController));
 router.post("/", adaptRoute(createMovieController));
 router.put("/:id", adaptRoute(updateMovieController));
 router.delete("/:id", adaptRoute(deleteMovieController));
+router.post("/seed", adaptRoute(seedMoviesController));
 router.post("/:id/scripts", adaptRoute(scriptMovieController));
 
 router.use("/reviews", reviewsApi);

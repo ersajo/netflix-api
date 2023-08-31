@@ -6,6 +6,9 @@ import { IGetPlatform } from "../../services/platforms/get-platform";
 import { IGetReviews } from "../../services/reviews/get-reviews";
 import { IGetScore } from "../../services/reviews/get-score";
 import { ObjectId } from "mongodb";
+import { IHttpRequest } from "../../helpers/callback";
+import { skip } from "node:test";
+import { getTotalMovies } from "../../services/movies";
 
 export const buildGetMovies = ({
   getMovies,
@@ -18,9 +21,18 @@ export const buildGetMovies = ({
   getReviews: IGetReviews,
   getScore: IGetScore,
 }) => {
-  return async (): Promise<IControllerResponse> => {
+  return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
-      const movies = await getMovies({}, null, {_id: -1});
+      const { query } = request;
+      const page = parseInt(query?.page as string) ?? 1;
+      const size = parseInt(query?.size as string) ?? 10;
+      const sortBy = query?.sortBy as string ?? "_id";
+      const sortOrder = query?.sortOrder as string === "asc" ? 1 : -1;
+      const movies = await getMovies(
+        {},
+        { skip: (page - 1) * size, limit: size },
+        { [sortBy]: sortOrder}
+      );
 
       for (let i = 0; i < movies.length; i++) {
         const movie = movies[i];
@@ -40,11 +52,18 @@ export const buildGetMovies = ({
         movie.score = await getScore({ movie: movie._id?.toString() });
       }
 
+      const total = await getTotalMovies({});
+
       return {
         success: true,
         statusCode: StatusCodes.OK,
         body: {
           movies,
+          meta: {
+            page,
+            size,
+            total,
+          },
         },
       };
     } catch (error: any) {

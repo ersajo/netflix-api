@@ -22,6 +22,7 @@ import { buildInsertMovie } from "./insert-movie";
 import { buildUpdateMovie } from "./update-movie";
 import { buildDeleteMovie } from "./delete-movie";
 import { buildScriptMovie } from "./script-movie";
+import { buildSeedMovies } from "./seed-movies";
 
 export const getMoviesController = buildGetMovies({
   getMovies,
@@ -55,4 +56,9 @@ export const scriptMovieController = buildScriptMovie({
   createMovie,
   getMovie,
   getPlatform,
+});
+export const seedMoviesController = buildSeedMovies({
+  createMovie,
+  getPlatform,
+  createPlatform,
 });

@@ -7,6 +7,7 @@ export interface IMoviesDb {
   insertMovie: (movie: IMovie) => Promise<IMovie>;
   updateMovie: (id: string, movie: IMovie) => Promise<IMovie>;
   deleteMovie: (id: string) => Promise<IMovie>;
+  getTotalMovies: (filter: any) => Promise<number>;
 }
 
 const COLLECTION = 'movies';
@@ -83,11 +84,24 @@ export const buildMoviesDb = ({
     return deletedMovie;
   }
 
+  const getTotalMovies = async (
+    filter: any,
+  ): Promise<number> => {
+    const { client } = db;
+    const total = await client
+      .db()
+      .collection(COLLECTION)
+      .countDocuments(filter);
+
+    return total;
+  }
+
   return {
     getMovies,
     getMovie,
     insertMovie,
     updateMovie,
     deleteMovie,
+    getTotalMovies,
   }
 }
