@@ -6,15 +6,19 @@ import { IHttpRequest } from "../../helpers/callback";
 import { IGetPlatform } from "../../services/platforms/get-platform";
 import { IGetMovie } from "../../services/movies/get-movie";
 import { ObjectId } from "mongodb";
+import { IPlatform } from "../../models";
+import { ICreatePlatform } from "../../services/platforms/insert-platform";
 
 export const buildUpdateMovie = ({
   updateMovie,
   getPlatform,
   getMovie,
+  createPlatform,
 }: {
   updateMovie: IUpdateMovie,
   getPlatform: IGetPlatform,
   getMovie: IGetMovie,
+  createPlatform: ICreatePlatform,
 }) => {
   return async (request: Partial<IHttpRequest>): Promise<IControllerResponse> => {
     try {
@@ -25,6 +29,19 @@ export const buildUpdateMovie = ({
       const movie = await getMovie({ _id: new ObjectId(params.id) });
       if (!movie) {
         throw new Error("Movie not found.");
+      }
+
+      if (body.platforms) {
+        body.platforms = await Promise.all(
+          movie.platforms.map(async (platform: IPlatform) => {
+            const platformFound = await getPlatform({ title: platform.title});
+            if (platformFound) {
+              return { platform_id: platformFound._id };
+            }
+            const { _id: newId } = await createPlatform(platform);
+            return { platform_id: newId };
+          })
+        );
       }
       const updatedMovie = await updateMovie(params.id, body);
 

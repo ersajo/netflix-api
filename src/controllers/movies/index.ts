@@ -36,6 +36,7 @@ export const updateMovieController = buildUpdateMovie({
   updateMovie,
   getPlatform,
   getMovie,
+  createPlatform,
 });
 export const deleteMovieController = buildDeleteMovie({
   deleteMovie,
